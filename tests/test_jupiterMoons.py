@@ -261,7 +261,7 @@ class TestJupiterMoons(TestCase):
 
     def test_is_phenomena(self):
         """
-        This test checks the updated `is_phenomena()` method which now
+        This test checks the  `is_phenomena()` method which
         returns the result matrix including "conjunction type"
         
         Each row corresponds to one Galilean satellite (Io, Europa, Ganymede, Callisto).
@@ -344,26 +344,19 @@ class TestJupiterMoons(TestCase):
             Epoch(2021, 8, 24.0408449074074), 3, 1]
         ]
 
-        # For each line in test_set, we know that exactly ONE phenomenon
-        # (row==expected_row, col==expected_col) is True; everything else is False.
-        # For the 3rd column [earth_based, sun_based], we check that the correct item
-        # is not None if phenomenon is True, else it stays None.
+
         for label, epoch_val, expected_row, expected_col in test_set:
             result = JupiterMoons.is_phenomena(epoch_val)
 
-            # Check columns 0 and 1 for True/False
             for row in range(4):
                 for col in range(2):
                     if row == expected_row and col == expected_col:
-                        # The one phenomenon we expect
                         assert result[row][col] is True, \
                             f"ERROR in {label}: expected row={row}, col={col} to be True"
                     else:
-                        # All others must be False
                         assert result[row][col] is False, \
                             f"ERROR in {label}: row={row}, col={col} should be False"
             
-
             for row in range(4):
                 if result[row][0]:
                     assert result[row][2][0] is not None, \

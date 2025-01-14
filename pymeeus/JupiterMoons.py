@@ -953,19 +953,19 @@ class JupiterMoons(object):
     def is_phenomena(epoch):
         """This method checks if the given coordinates correspond with any
         satellite phenomena. It also determines conjunction status such as
-        moon in occultation, moon in transit, Moon in eclipse, Shadow Transit
+        moon in occultation, moon in transit, moon in eclipse, shadow Transit
     
         :param epoch: Epoch the calculations should be made for
         :type epoch: :py:class:'Epoch'
         :returns: Result matrix for the four Galilean satellites
-            Row 0: Io            Column 0: Earth Conjunction
-            Row 1: Europa        Column 1: Sun Conjunction
-            Row 2: Ganymede      Column 2: Conjunction Type  [Earth-Superior Conjunction, Sun-Superior Conjunction]
+            Row 0: Io            Column 0: Earth Occultation
+            Row 1: Europa        Column 1: Sun Occultation
+            Row 2: Ganymede      Column 2: Occultation Type  [Earth-Superior Conjunction, Sun-Superior Conjunction]
             Row 3: Callisto      
             
-            Conjunction Type (Superior Conjunction)
-            Column 1: Earth-Superior Conjunction (True: occultation, False: transit)
-            Column 2: Sun-Superior Conjunction (True: eclipse, False: shadow transit)
+            Occultation Type (Superior Conjunction)
+            Column 1: Earth-Superior Conjunction (True: Jupiter occults moon, False: moon transits jupiter)
+            Column 2: Sun-Superior Conjunction (True: moon enters eclipse, False: shadow transits jupiter)
         
         :rtype: list
     
@@ -1009,8 +1009,8 @@ class JupiterMoons(object):
                 # Occultation and Eclipse check within -1 and 1
                 result_matrix[row][col] = (1 >= dist_matrix[row][col] >= -1)
 
-            # Determine conjunction status for the third column
-            # Check Earth-based and Sun-based distances only if there's a conjunction
+            # Determine Occultation status for the third column
+            # Check Earth-based and Sun-based distances only if there's a Occultation
             earth_based = dist_matrix[row][0] >= 0 if result_matrix[row][0] else None
             sun_based = dist_matrix[row][1] >= 0 if result_matrix[row][1] else None
 
@@ -1324,33 +1324,33 @@ def main():
     io_ecc_start_2021_02_12_14_19_14 = Epoch(2021, 2, 12.5966898148148)
 
     # Structure of result matrix
-    # Row 0: Io            Column 0: Earth Conjunction
-    # Row 1: Europa        Column 1: Sun Conjunction
-    # Row 2: Ganymede      Column 2: Conjunction Type  [Earth-Superior Conjunction, Sun-Superior Conjunction]
+    # Row 0: Io            Column 0: Earth Occultation
+    # Row 1: Europa        Column 1: Sun Occultation
+    # Row 2: Ganymede      Column 2: Occultation Type  [Earth-Superior Conjunction, Sun-Superior Conjunction]
     # Row 3: Callisto      
-    
-    # Conjuntion Type (Superior Conjunction)
-    # Column 1: Earth-Superior Conjunction (True: occultation, False: transit)
-    # Column 2: Sun-Superior Conjunction (True: eclipse, False: shadow transit)
+
+    # Occultation Type (Superior Conjunction)
+    # Column 1: Earth-Superior Conjunction (True: Jupiter occults moon, False: moon transits jupiter)
+    # Column 2: Sun-Superior Conjunction (True: moon enters eclipse, False: shadow transits jupiter)
 
     result_matrix = JupiterMoons.is_phenomena(io_ecc_start_2021_02_12_14_19_14)
     # Print Row 0
-    print("(Earth Conjunction of Io, Sun Conjunction of Io, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
+    print("(Earth Occultation of Io, Sun Occultation of Io, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
     print(result_matrix[0])
     # Expected Output: [False, True, [None, True]]
 
     # Print Row 1
-    print("(Earth Conjunction of Europa, Sun Conjunction of Europa, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
+    print("(Earth Occultation of Europa, Sun Occultation of Europa, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
     print(result_matrix[1])
     # Expected Output: [False, False, [None, None]]
 
     # Print Row 2
-    print("(Earth Conjunction of Ganymede, Sun Conjunction of Ganymede, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
+    print("(Earth Occultation of Ganymede, Sun Occultation of Ganymede, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
     print(result_matrix[2])
     # Expected Output: [False, False, [None, None]]
 
     # Print Row 3
-    print("(Earth Conjunction of Callisto, Sun Conjunction of Callisto, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
+    print("(Earth Occultation of Callisto, Sun Occultation of Callisto, [Superior Conjunction (Earth), Superior Conjunction (Sun)]):")
     print(result_matrix[3])
     # Expected Output: [False, False, [None, None]]
 
