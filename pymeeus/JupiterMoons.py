@@ -1016,7 +1016,6 @@ class JupiterMoons(object):
 
             result_matrix[row][2] = [earth_based, sun_based]
 
-    
         return result_matrix
 
     @staticmethod
